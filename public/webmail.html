@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Job Do for You · 메일</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --ink:#0B1623; --ink-2:#0F1C2E; --ink-3:#13263C;
+    --paper:#ECE6D8; --paper-dim:#9BA6B6;
+    --brass:#C9A45C; --brass-bright:#E2C586;
+    --line-warm:rgba(201,164,92,.20); --line-cool:rgba(255,255,255,.08);
+    --display:'Space Grotesk','Pretendard',sans-serif;
+    --sans:'Pretendard','Pretendard Variable',-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--paper);font-family:var(--sans);height:100vh;overflow:hidden}
+  button{font-family:var(--sans);cursor:pointer}
+  .btn{font-size:13.5px;font-weight:600;color:var(--ink);background:var(--brass);border:none;border-radius:2px;padding:10px 18px;transition:background .2s}
+  .btn:hover{background:var(--brass-bright)}
+  .btn-ghost{background:transparent;color:var(--brass);border:1px solid var(--line-warm)}
+  .btn-ghost:hover{background:rgba(201,164,92,.08)}
+
+  /* ---------- login ---------- */
+  #login{height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login-card{width:100%;max-width:380px}
+  .login-card .mark{font-family:var(--display);font-weight:600;font-size:22px;margin-bottom:6px}
+  .login-card .mark span{color:var(--brass)}
+  .login-card .sub{color:var(--paper-dim);font-size:13.5px;margin-bottom:28px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;color:var(--paper-dim);margin-bottom:6px;letter-spacing:.03em}
+  .field input{width:100%;background:var(--ink-2);border:1px solid var(--line-cool);border-radius:3px;color:var(--paper);font-size:14.5px;padding:11px 13px}
+  .field input:focus{outline:none;border-color:var(--brass)}
+  #login .btn{width:100%;padding:12px;margin-top:6px}
+  .hint{font-size:12px;color:var(--paper-dim);margin-top:16px;line-height:1.6}
+  .err{color:#E2986A;font-size:13px;margin-top:12px;min-height:18px}
+
+  /* ---------- app ---------- */
+  #app{display:none;height:100vh;flex-direction:column}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:58px;border-bottom:1px solid var(--line-cool);flex-shrink:0}
+  .topbar .mark{font-family:var(--display);font-weight:600;font-size:17px}
+  .topbar .mark span{color:var(--brass)}
+  .topbar .right{display:flex;align-items:center;gap:12px}
+  .topbar .who{font-size:13px;color:var(--paper-dim)}
+  .main{flex:1;display:flex;min-height:0}
+  .list{width:340px;border-right:1px solid var(--line-cool);overflow-y:auto;flex-shrink:0}
+  .list-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line-cool);position:sticky;top:0;background:var(--ink);z-index:2}
+  .list-head h2{font-size:14px;font-weight:600;letter-spacing:.02em}
+  .refresh{background:none;border:none;color:var(--brass);font-size:13px}
+  .mailrow{padding:13px 16px;border-bottom:1px solid var(--line-cool);cursor:pointer;transition:background .15s}
+  .mailrow:hover{background:var(--ink-2)}
+  .mailrow.active{background:var(--ink-3)}
+  .mailrow .r1{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px}
+  .mailrow .from{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mailrow.unread .from{color:var(--brass-bright)}
+  .mailrow .date{font-size:11.5px;color:var(--paper-dim);white-space:nowrap;flex-shrink:0}
+  .mailrow .subj{font-size:13px;color:var(--paper-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .reader{flex:1;overflow-y:auto;padding:28px 34px}
+  .reader .empty{height:100%;display:flex;align-items:center;justify-content:center;color:var(--paper-dim);font-size:14px}
+  .reader h1{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+  .reader .meta{font-size:13px;color:var(--paper-dim);border-bottom:1px solid var(--line-cool);padding-bottom:16px;margin-bottom:20px;line-height:1.7}
+  .reader .meta b{color:var(--paper);font-weight:600}
+  .reader .body{font-size:14.5px;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+  .reader .body.html{white-space:normal}
+  .reader .body.html *{max-width:100%}
+  .reader .actions{margin-bottom:20px}
+  .spin{color:var(--paper-dim);font-size:14px;padding:18px 16px}
+
+  /* ---------- compose ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(6,12,20,.7);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:24px;z-index:50}
+  .overlay.open{display:flex}
+  .compose{background:var(--ink-2);border:1px solid var(--line-warm);border-radius:5px;width:100%;max-width:560px;padding:26px 28px}
+  .compose h3{font-size:18px;font-weight:700;margin-bottom:18px}
+  .compose .field input,.compose .field textarea{width:100%;background:var(--ink);border:1px solid var(--line-cool);border-radius:3px;color:var(--paper);font-family:var(--sans);font-size:14px;padding:10px 12px}
+  .compose textarea{min-height:180px;resize:vertical;line-height:1.6}
+  .compose .row{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink-3);border:1px solid var(--line-warm);color:var(--paper);padding:12px 20px;border-radius:4px;font-size:13.5px;display:none;z-index:60}
+  .toast.show{display:block}
+
+  @media(max-width:760px){
+    .list{width:100%;border-right:0}
+    .reader{display:none}
+    .main.reading .list{display:none}
+    .main.reading .reader{display:block;flex:1}
+    .back{display:inline-block;color:var(--brass);font-size:13px;background:none;border:none;margin-bottom:14px}
+  }
+  @media(min-width:761px){ .back{display:none} }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <div class="mark">My Job Do for You <span>메일</span></div>
+    <div class="sub">myjd4u.com 메일함에 로그인</div>
+    <div class="field">
+      <label for="email">이메일</label>
+      <input id="email" type="email" autocomplete="username" placeholder="skott.park@myjd4u.com">
+    </div>
+    <div class="field">
+      <label for="pw">앱 전용 비밀번호</label>
+      <input id="pw" type="password" autocomplete="current-password" placeholder="Zoho 앱 비밀번호">
+    </div>
+    <button class="btn" id="loginBtn">로그인</button>
+    <div class="err" id="loginErr"></div>
+    <div class="hint">일반 Zoho 비밀번호가 아니라, Zoho에서 발급한 <b>앱 전용 비밀번호</b>를 넣으세요. (Mail Lite 이상 + IMAP 사용 설정 필요)</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="mark">My Job Do for You <span>메일</span></div>
+    <div class="right">
+      <span class="who" id="who"></span>
+      <button class="btn" id="composeBtn">쓰기</button>
+      <button class="btn-ghost btn" id="logoutBtn">로그아웃</button>
+    </div>
+  </div>
+  <div class="main" id="mainArea">
+    <div class="list" id="list">
+      <div class="list-head">
+        <h2>받은편지함</h2>
+        <button class="refresh" id="refreshBtn">새로고침</button>
+      </div>
+      <div id="rows"><div class="spin">불러오는 중…</div></div>
+    </div>
+    <div class="reader" id="reader">
+      <div class="empty">왼쪽에서 메일을 선택하세요.</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPOSE -->
+<div class="overlay" id="overlay">
+  <div class="compose">
+    <h3>새 메일</h3>
+    <div class="field"><input id="c-to" type="text" placeholder="받는 사람 (이메일)"></div>
+    <div class="field"><input id="c-subj" type="text" placeholder="제목"></div>
+    <div class="field"><textarea id="c-body" placeholder="내용"></textarea></div>
+    <div class="row">
+      <button class="btn-ghost btn" id="c-cancel">취소</button>
+      <button class="btn" id="c-send">보내기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
+function fmtDate(d){ if(!d) return ''; const dt=new Date(d); const now=new Date();
+  const sameDay = dt.toDateString()===now.toDateString();
+  return sameDay ? dt.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) : dt.toLocaleDateString('ko-KR',{month:'2-digit',day:'2-digit'});
+}
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// ---- login ----
+async function doLogin(){
+  const email=$('#email').value.trim(), password=$('#pw').value;
+  $('#loginErr').textContent='';
+  if(!email||!password){ $('#loginErr').textContent='이메일과 앱 비밀번호를 입력하세요.'; return; }
+  $('#loginBtn').textContent='접속 중…'; $('#loginBtn').disabled=true;
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error||'로그인 실패');
+    enterApp(d.email);
+  }catch(e){ $('#loginErr').textContent=e.message; }
+  finally{ $('#loginBtn').textContent='로그인'; $('#loginBtn').disabled=false; }
+}
+$('#loginBtn').addEventListener('click',doLogin);
+$('#pw').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+function enterApp(email){
+  $('#login').style.display='none';
+  $('#app').style.display='flex';
+  $('#who').textContent=email;
+  loadInbox();
+}
+
+// ---- inbox ----
+let messages=[];
+async function loadInbox(){
+  $('#rows').innerHTML='<div class="spin">불러오는 중…</div>';
+  try{
+    const r=await fetch('/api/inbox');
+    if(r.status===401){ location.reload(); return; }
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error);
+    messages=d.messages||[];
+    renderList();
+  }catch(e){ $('#rows').innerHTML='<div class="spin">오류: '+esc(e.message)+'</div>'; }
+}
+function renderList(){
+  if(!messages.length){ $('#rows').innerHTML='<div class="spin">메일이 없습니다.</div>'; return; }
+  $('#rows').innerHTML = messages.map(m=>`
+    <div class="mailrow ${m.seen?'':'unread'}" data-uid="${m.uid}">
+      <div class="r1"><span class="from">${esc(m.fromName||m.fromAddr)}</span><span class="date">${fmtDate(m.date)}</span></div>
+      <div class="subj">${esc(m.subject)}</div>
+    </div>`).join('');
+  document.querySelectorAll('.mailrow').forEach(el=>el.addEventListener('click',()=>openMessage(el.dataset.uid,el)));
+}
+
+async function openMessage(uid,el){
+  document.querySelectorAll('.mailrow').forEach(r=>r.classList.remove('active'));
+  if(el){ el.classList.add('active'); el.classList.remove('unread'); }
+  $('#mainArea').classList.add('reading');
+  $('#reader').innerHTML='<div class="spin">불러오는 중…</div>';
+  try{
+    const r=await fetch('/api/message/'+encodeURIComponent(uid));
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error);
+    const backBtn = '<button class="back" id="backBtn">← 목록</button>';
+    let bodyHtml;
+    if(d.html){ bodyHtml='<div class="body html">'+d.html+'</div>'; }
+    else { bodyHtml='<div class="body">'+esc(d.text)+'</div>'; }
+    $('#reader').innerHTML = backBtn +
+      '<div class="actions"><button class="btn-ghost btn" id="replyBtn">답장</button></div>'+
+      '<h1>'+esc(d.subject)+'</h1>'+
+      '<div class="meta"><b>'+esc(d.from)+'</b><br>받는사람: '+esc(d.to)+'<br>'+(d.date?new Date(d.date).toLocaleString('ko-KR'):'')+'</div>'+
+      bodyHtml;
+    const back=$('#backBtn'); if(back) back.addEventListener('click',()=>$('#mainArea').classList.remove('reading'));
+    $('#replyBtn').addEventListener('click',()=>{
+      const addr=(d.from.match(/<(.+?)>/)||[null,d.from])[1];
+      openCompose(addr, d.subject.startsWith('Re:')?d.subject:'Re: '+d.subject);
+    });
+  }catch(e){ $('#reader').innerHTML='<div class="spin">오류: '+esc(e.message)+'</div>'; }
+}
+
+$('#refreshBtn').addEventListener('click',loadInbox);
+$('#logoutBtn').addEventListener('click',async()=>{ await fetch('/api/logout',{method:'POST'}); location.reload(); });
+
+// ---- compose ----
+function openCompose(to,subject){
+  $('#c-to').value=to||''; $('#c-subj').value=subject||''; $('#c-body').value='';
+  $('#overlay').classList.add('open'); $('#c-to').focus();
+}
+$('#composeBtn').addEventListener('click',()=>openCompose('',''));
+$('#c-cancel').addEventListener('click',()=>$('#overlay').classList.remove('open'));
+$('#overlay').addEventListener('click',e=>{ if(e.target===$('#overlay')) $('#overlay').classList.remove('open'); });
+$('#c-send').addEventListener('click',async()=>{
+  const to=$('#c-to').value.trim();
+  if(!to){ toast('받는 사람을 입력하세요.'); return; }
+  $('#c-send').textContent='보내는 중…'; $('#c-send').disabled=true;
+  try{
+    const r=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({to,subject:$('#c-subj').value,text:$('#c-body').value})});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error);
+    $('#overlay').classList.remove('open'); toast('메일을 보냈습니다.');
+  }catch(e){ toast(e.message); }
+  finally{ $('#c-send').textContent='보내기'; $('#c-send').disabled=false; }
+});
+
+// 이미 로그인돼 있으면 바로 진입
+fetch('/api/me').then(r=>r.ok?r.json():Promise.reject()).then(d=>enterApp(d.email)).catch(()=>{});
+</script>
+</body>
+</html>
