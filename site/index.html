@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Job Do for You · 물류·사업 자문</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --ink:#0B1623; --ink-2:#0F1C2E; --ink-3:#13263C;
+    --paper:#ECE6D8; --paper-dim:#9BA6B6;
+    --brass:#C9A45C; --brass-bright:#E2C586;
+    --line-warm:rgba(201,164,92,.20); --line-cool:rgba(255,255,255,.08);
+    --display:'Space Grotesk','Pretendard',sans-serif;
+    --sans:'Pretendard','Pretendard Variable',-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:var(--sans);min-height:100vh}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(120% 80% at 80% -10%, rgba(201,164,92,.10), transparent 60%)}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--sans);cursor:pointer;border:none;background:none;color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  section{scroll-margin-top:84px}
+
+  /* NAV */
+  header{border-bottom:1px solid var(--line-cool);position:sticky;top:0;background:rgba(11,22,35,.78);backdrop-filter:blur(12px);z-index:30}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .mark{font-family:var(--display);font-weight:600;font-size:18px;color:var(--paper);display:flex;align-items:center;gap:10px}
+  .mark .logo{height:26px;width:auto;display:block}
+  .mark span{color:var(--brass)}
+  .links{display:flex;align-items:center;gap:6px}
+  .links a{color:var(--paper-dim);font-size:14px;padding:8px 12px;border-radius:3px;transition:.18s}
+  .links a:hover{color:var(--brass)}
+  .links .cta{color:var(--ink);background:var(--brass);font-weight:600}
+  .links .cta:hover{background:var(--brass-bright);color:var(--ink)}
+
+  /* HERO */
+  .hero{padding:clamp(56px,9vw,108px) 0 clamp(34px,5vw,56px)}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin-bottom:22px}
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brass)}
+  .hero h1{font-weight:800;font-size:clamp(30px,5.4vw,52px);letter-spacing:-.03em;line-height:1.12}
+  .hero h1 em{font-style:normal;color:var(--brass)}
+  .hero .lead{margin-top:20px;color:var(--paper-dim);font-size:clamp(15px,1.7vw,18px);max-width:58ch;line-height:1.75}
+  .hero-cta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:32px}
+  .btn{font-size:14px;font-weight:600;color:var(--ink);background:var(--brass);border-radius:3px;padding:12px 24px;transition:background .2s}
+  .btn:hover{background:var(--brass-bright)}
+  .btn-ghost{background:transparent;color:var(--brass);border:1px solid var(--line-warm)}
+  .btn-ghost:hover{background:rgba(201,164,92,.08)}
+  .hero-note{margin-top:18px;font-size:13px;color:var(--paper-dim)}
+
+  /* SECTION */
+  .sec{padding:clamp(44px,7vw,84px) 0}
+  .sec-head{margin-bottom:36px}
+  .eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin-bottom:16px}
+  .sec h2{font-weight:800;font-size:clamp(24px,4vw,38px);letter-spacing:-.025em;line-height:1.16}
+
+  /* INSIGHT CARDS */
+  .insights{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .ins{position:relative;background:var(--ink-2);border:1px solid var(--line-cool);border-radius:6px;padding:24px;overflow:hidden;
+    display:flex;flex-direction:column;gap:12px;transition:border-color .2s,background .2s,transform .2s}
+  .ins:hover{border-color:var(--line-warm);background:var(--ink-3);transform:translateY(-3px)}
+  .ins .num{position:absolute;top:14px;right:20px;font-family:var(--display);font-size:54px;font-weight:700;line-height:1;color:rgba(201,164,92,.10);z-index:0}
+  .ins .cat{position:relative;z-index:1;font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+  .ins h3{position:relative;z-index:1;font-size:17px;font-weight:700;line-height:1.4;letter-spacing:-.01em}
+  .ins .teaser{position:relative;z-index:1;color:var(--paper-dim);font-size:13.5px;line-height:1.6;flex:1}
+  .ins .open{position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--brass);transition:gap .2s}
+  .ins:hover .open{gap:11px}
+
+  /* ABOUT */
+  .about{border-top:1px solid var(--line-cool)}
+  .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:start}
+  .about-grid p{color:var(--paper-dim);font-size:15.5px;line-height:1.85;margin-top:16px}
+  .expertise{display:flex;flex-direction:column;gap:12px}
+  .exp{background:var(--ink-2);border:1px solid var(--line-cool);border-radius:5px;padding:18px 20px}
+  .exp .t{font-family:var(--display);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin-bottom:7px}
+  .exp .h{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+  .exp .d{font-size:13px;color:var(--paper-dim);margin-top:4px}
+
+  /* CTA BAND */
+  .band{border:1px solid var(--line-warm);border-radius:8px;padding:clamp(34px,5vw,60px);text-align:center;
+    background:linear-gradient(160deg,var(--ink-2),var(--ink-3))}
+  .band h2{font-weight:800;font-size:clamp(22px,4vw,34px);letter-spacing:-.025em;line-height:1.18}
+  .band p{color:var(--paper-dim);font-size:15.5px;margin:16px auto 0;max-width:50ch;line-height:1.7}
+  .band .btn{margin-top:26px}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line-cool);padding:30px 0;font-size:13px;color:var(--paper-dim)}
+  .fwrap{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+  .fwrap a:hover{color:var(--brass)}
+
+  /* MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(6,12,20,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:24px;z-index:50}
+  .overlay.open{display:flex}
+  .modal{background:var(--ink-2);border:1px solid var(--line-warm);border-radius:6px;width:100%;max-width:460px;padding:30px;position:relative;max-height:90vh;overflow:auto}
+  .modal .x{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:3px;color:var(--paper-dim);font-size:18px;display:grid;place-items:center;transition:.16s}
+  .modal .x:hover{background:var(--ink);color:var(--brass)}
+  .modal .eyebrow{margin-bottom:10px}
+  .modal h3{font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .modal .msub{color:var(--paper-dim);font-size:13.5px;margin-top:10px;line-height:1.6}
+  .field{margin-top:16px}
+  .field label{display:block;font-size:12px;color:var(--paper-dim);margin-bottom:6px}
+  .field label .opt{opacity:.7}
+  .field input,.field textarea{width:100%;background:var(--ink);border:1px solid var(--line-cool);border-radius:3px;color:var(--paper);font-family:var(--sans);font-size:14px;padding:11px 13px;resize:vertical}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--brass)}
+  .modal .btn{width:100%;margin-top:22px;padding:13px}
+  .done{text-align:center;padding:10px 0}
+  .done .ic{width:60px;height:60px;border-radius:50%;background:rgba(201,164,92,.12);color:var(--brass);display:grid;place-items:center;margin:0 auto 18px;font-size:28px}
+  .done h3{font-size:19px;font-weight:700}
+  .done p{color:var(--paper-dim);font-size:13.5px;margin-top:10px;line-height:1.6}
+
+  @media(max-width:760px){
+    .links a:not(.cta){display:none}
+    .about-grid{grid-template-columns:1fr;gap:26px}
+    .wrap{padding:0 22px}
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="/" class="mark"><img src="/assets/logo-mark.png" alt="" class="logo">My Job Do for You</a>
+    <div class="links">
+      <a href="#insights">인사이트</a>
+      <a href="#about">소개</a>
+      <a href="/lib/">자료실</a>
+      <a href="/internal/">로그인</a>
+      <button class="cta" data-open>열람 신청</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="wrap hero">
+    <div class="badge">My Job Do for You</div>
+    <h1>현장에서 검증한 전략은,<br><em>필요한 분에게만</em> 공개합니다.</h1>
+    <p class="lead">화주와 포워더 양쪽에서 쌓은 물류·원가·협상 인사이트를 비공개로 정리합니다. 제목을 먼저 보시고, 도움이 될 것 같다면 열람을 신청하세요.</p>
+    <div class="hero-cta">
+      <button class="btn" data-open>인사이트 열람 신청</button>
+      <a class="btn btn-ghost" href="#insights">목록 보기</a>
+    </div>
+    <p class="hero-note">현재 공개 중인 인사이트 6편 · 제목만 공개 · 본문은 신청자에게</p>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="wrap sec" id="insights">
+    <div class="sec-head">
+      <div class="eyebrow">비공개 인사이트</div>
+      <h2>제목만 공개, 본문은 신청자에게.</h2>
+    </div>
+    <div class="insights" id="insGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <div class="about">
+    <section class="wrap sec" id="about">
+      <div class="about-grid">
+        <div>
+          <div class="eyebrow">소개</div>
+          <h2>화주와 포워더,<br>양쪽의 언어를 모두 아는 자문.</h2>
+          <p>오랫동안 항공·해상·물류 전략과 실적 분석을 총괄해 왔습니다. 단가표 한 줄이 어떻게 매총율로 이어지는지, 그리고 그 숫자가 협상 테이블에서 어떻게 쓰이는지를 양쪽에서 모두 다뤄 왔습니다.</p>
+          <p>여기 정리한 인사이트는 이론이 아니라, 실제 거래와 실적에서 검증한 것들입니다. 일반론은 어디에나 있으니, 여기서는 현장에서만 보이는 판단의 순서를 남깁니다.</p>
+        </div>
+        <div class="expertise">
+          <div class="exp"><div class="t">전문</div><div class="h">물류 원가 · 매총율</div><div class="d">단가 구조와 수익성 분석</div></div>
+          <div class="exp"><div class="t">전문</div><div class="h">화주 포트폴리오</div><div class="d">이탈·신규·핵심 거래처 관리</div></div>
+          <div class="exp"><div class="t">전문</div><div class="h">항공·해상 운임</div><div class="d">모드 전환과 협상 전략</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="wrap sec" id="contact">
+    <div class="band">
+      <h2>지금 필요한 인사이트가 보이셨나요?</h2>
+      <p>제목 옆 자물쇠는 장벽이 아니라 초대장입니다. 어떤 편이 궁금한지 남겨주시면, 본문 열람 방법을 안내해 드립니다.</p>
+      <button class="btn" data-open>열람 신청하기</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap fwrap">
+    <span>© 2026 · My Job Do for You</span>
+    <span><a href="#top">맨 위로</a> · <a href="/internal/">로그인</a></span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="x" id="close" aria-label="닫기">✕</button>
+    <div id="formView">
+      <div class="eyebrow">비공개 인사이트 열람 신청</div>
+      <h3 id="mTitle">관심 있는 편을 알려주세요</h3>
+      <p class="msub">간단한 정보만 남겨주시면, 선택하신 인사이트 본문 열람 방법을 메일로 안내해 드립니다.</p>
+      <div class="field"><label>이름</label><input id="f-name" placeholder="홍길동"></div>
+      <div class="field"><label>회사 / 직함 <span class="opt">(선택)</span></label><input placeholder="회사명 · 직함"></div>
+      <div class="field"><label>이메일</label><input id="f-email" type="email" placeholder="name@company.com"></div>
+      <div class="field"><label>관심 분야나 한마디 <span class="opt">(선택)</span></label><textarea rows="3" placeholder="예: 02번 화주 이탈신호 편이 궁금합니다."></textarea></div>
+      <button class="btn" id="submit">신청 보내기</button>
+    </div>
+    <div id="doneView" hidden>
+      <div class="done">
+        <div class="ic">✓</div>
+        <h3>신청이 접수되었습니다</h3>
+        <p>입력하신 메일로 열람 방법을 보내드리겠습니다.<br>관심 가져 주셔서 감사합니다.</p>
+        <button class="btn btn-ghost" id="closeDone" style="margin-top:22px">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const INSIGHTS = [
+  {n:"01", cat:"물류 원가", title:"매총율 1%p를 끌어올린 단가 재협상의 순서", teaser:"할인을 요구하는 대신, 협상 테이블의 구조부터 바꿨다. 순서가 결과를 바꾼 이유는…"},
+  {n:"02", cat:"화주 포트폴리오", title:"이탈 직전 화주를 구별하는 3가지 신호", teaser:"거래량이 줄기 전에 먼저 나타나는 것이 있다. 숫자가 아니라 행동에서 보이는 신호는…"},
+  {n:"03", cat:"항공·해상", title:"운임 급등기에 손실을 줄인 모드 전환 판단 기준", teaser:"지표가 동시에 흔들릴 때, 항공과 해상 사이에서 무엇을 먼저 봐야 하는가. 기준은…"},
+  {n:"04", cat:"영업 전략", title:"신규 화주 한 곳을 6개월 만에 핵심 거래처로 만든 과정", teaser:"첫 미팅에서 단가를 먼저 꺼내지 않았다. 그 대신 테이블에 올린 것은…"},
+  {n:"05", cat:"조직·운영", title:"월간 실적 보고를 30분 만에 끝내는 데이터 구조", teaser:"보고가 늦는 진짜 원인은 양식이 아니었다. 집계의 기준을 다시 잡자 바뀐 것은…"},
+  {n:"06", cat:"협상", title:"을의 위치에서 단가를 지킨 메일 한 통", teaser:"거절하지 않고도 우위를 가져오는 문장 구조가 있다. 핵심은 첫 두 문장에…"},
+];
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+document.getElementById('insGrid').innerHTML = INSIGHTS.map(i=>`
+  <article class="ins" data-open>
+    <span class="num">${i.n}</span>
+    <span class="cat">${esc(i.cat)}</span>
+    <h3>${esc(i.title)}</h3>
+    <p class="teaser">${esc(i.teaser)}</p>
+    <span class="open">🔒 열람 신청하고 본문 보기 →</span>
+  </article>`).join('');
+
+const overlay=document.getElementById('overlay');
+const open=()=>{overlay.classList.add('open');document.body.style.overflow='hidden';
+  document.getElementById('formView').hidden=false;document.getElementById('doneView').hidden=true;};
+const close=()=>{overlay.classList.remove('open');document.body.style.overflow='';};
+document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',open));
+document.getElementById('close').onclick=close;
+document.getElementById('closeDone').onclick=close;
+overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+
+/* 신청 전송 — 지금은 화면상 접수 처리만 합니다.
+   실제 메일 발송으로 연결하려면, 기존 사이트에서 쓰던 폼 방식에 맞춰
+   아래 submit 안에서 fetch('/api/apply', {...}) 또는 Formspree 등으로 보내세요. */
+document.getElementById('submit').onclick=()=>{
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  if(!name||!email){ (name?document.getElementById('f-email'):document.getElementById('f-name')).focus(); return; }
+  document.getElementById('formView').hidden=true;
+  document.getElementById('doneView').hidden=false;
+};
+</script>
+</body>
+</html>

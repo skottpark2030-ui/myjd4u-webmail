@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자료실 · My Job Do for You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --ink:#0B1623; --ink-2:#0F1C2E; --ink-3:#13263C;
+    --paper:#ECE6D8; --paper-dim:#9BA6B6;
+    --brass:#C9A45C; --brass-bright:#E2C586;
+    --line-warm:rgba(201,164,92,.20); --line-cool:rgba(255,255,255,.08);
+    --display:'Space Grotesk','Pretendard',sans-serif;
+    --sans:'Pretendard','Pretendard Variable',-apple-system,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--paper);font-family:var(--sans);min-height:100vh}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(120% 80% at 80% -10%, rgba(201,164,92,.08), transparent 60%)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  header{border-bottom:1px solid var(--line-cool);position:sticky;top:0;background:rgba(11,22,35,.78);backdrop-filter:blur(12px);z-index:10}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .mark{font-family:var(--display);font-weight:600;font-size:18px;text-decoration:none;color:var(--paper);display:flex;align-items:center;gap:10px}
+  .mark .logo{height:26px;width:auto;display:block}
+  .mark span{color:var(--brass)}
+  .nav .links a{color:var(--paper-dim);text-decoration:none;font-size:14px;margin-left:24px}
+  .nav .links a:hover{color:var(--brass)}
+  .hero{padding:66px 0 26px}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin-bottom:20px}
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brass)}
+  h1{font-weight:800;font-size:clamp(28px,4vw,42px);letter-spacing:-.025em}
+  .lead{margin-top:16px;color:var(--paper-dim);font-size:16px;max-width:54ch;line-height:1.7}
+
+  /* tools: search + filters */
+  .tools{display:flex;gap:12px;align-items:center;margin:30px 0 6px;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;background:var(--ink-2);border:1px solid var(--line-cool);border-radius:4px;color:var(--paper);font-family:var(--sans);font-size:14px;padding:11px 14px}
+  .search::placeholder{color:var(--paper-dim)}
+  .search:focus{outline:none;border-color:var(--brass)}
+  .count{font-size:13px;color:var(--paper-dim)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}
+  .chip{font-family:var(--display);font-size:12px;letter-spacing:.08em;color:var(--paper-dim);
+    background:var(--ink-2);border:1px solid var(--line-cool);border-radius:3px;padding:7px 14px;cursor:pointer;transition:.18s}
+  .chip:hover{color:var(--paper);border-color:var(--line-warm)}
+  .chip[aria-pressed="true"]{color:var(--ink);background:var(--brass);border-color:var(--brass)}
+
+  /* cards with thumbnail */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:24px 0 60px}
+  .card{background:var(--ink-2);border:1px solid var(--line-cool);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,background .2s,transform .2s}
+  .card:hover{border-color:var(--line-warm);background:var(--ink-3);transform:translateY(-3px)}
+  .thumb{height:132px;position:relative;border-bottom:1px solid var(--line-cool);
+    background:linear-gradient(160deg,var(--ink-3),var(--ink-2))}
+  .thumb svg{width:100%;height:100%}
+  .thumb .kind{position:absolute;top:12px;left:12px;font-family:var(--display);font-size:11px;letter-spacing:.1em;
+    color:var(--brass);background:rgba(11,22,35,.7);border:1px solid var(--line-warm);border-radius:3px;padding:3px 9px}
+  .card-body{padding:20px 22px 18px;display:flex;flex-direction:column;flex:1}
+  .card h3{font-size:17px;font-weight:700;line-height:1.4;letter-spacing:-.01em}
+  .card .desc{margin-top:9px;font-size:13.5px;color:var(--paper-dim);line-height:1.6;flex:1}
+  .card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
+  .card .meta{font-size:12px;color:var(--paper-dim)}
+  .card a.act{font-size:13px;font-weight:600;color:var(--ink);background:var(--brass);border-radius:3px;padding:7px 15px;text-decoration:none;transition:background .2s}
+  .card a.act:hover{background:var(--brass-bright)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--paper-dim);padding:50px;border:1px dashed var(--line-warm);border-radius:6px;font-size:14px}
+  footer{border-top:1px solid var(--line-cool);padding:26px 0;font-size:13px;color:var(--paper-dim)}
+  @media(max-width:720px){ .wrap{padding:0 22px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a href="/" class="mark"><img src="/assets/logo-mark.png" alt="" class="logo">My Job Do for You <span>· 자료실</span></a>
+    <div class="links">
+      <a href="/">홈</a>
+      <a href="/internal/">로그인</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="badge">Public · 공개 자료</div>
+    <h1>자료실</h1>
+    <p class="lead">누구나 열람·다운로드할 수 있는 공개 자료입니다. HTML 대시보드, 앱, 문서 등을 정리해 둡니다.</p>
+    <div class="tools">
+      <input class="search" id="search" type="text" placeholder="자료 검색…">
+      <span class="count" id="count"></span>
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip" data-f="all" aria-pressed="true">전체</button>
+      <button class="chip" data-f="dash" aria-pressed="false">대시보드</button>
+      <button class="chip" data-f="app" aria-pressed="false">앱</button>
+      <button class="chip" data-f="doc" aria-pressed="false">문서</button>
+    </div>
+  </section>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer><div class="wrap">© 2026 · My Job Do for You</div></footer>
+
+<script>
+/* ============================================================
+   자료 목록 — 여기만 편집하면 됩니다.
+   파일 추가하는 법:
+   1) 파일을 lib/files/ 폴더에 넣습니다 (예: lib/files/항공실적.html)
+   2) 아래 RESOURCES 배열에 한 줄 추가합니다
+   3) 사이트를 다시 배포합니다
+   - kind: "html" = 새 탭에서 열기 / "file" = 다운로드
+   - cat : "dash"(대시보드) / "app"(앱) / "doc"(문서)  ← 분류 필터·썸네일에 사용 (생략 가능)
+   ============================================================ */
+const RESOURCES = [
+  // ↓↓↓ 아래 4개는 디자인 미리보기용 예시입니다. 모두 실제 sample.html을 가리키니 404는 안 납니다.
+  { title:"항공수출 실적 대시보드", file:"files/sample.html", kind:"html", cat:"dash",
+    desc:"월별 매출·매총율·물동량을 지역별로 비교하는 인터랙티브 대시보드.", meta:"2026-06" },
+  { title:"매총율 단가 시뮬레이터", file:"files/sample.html", kind:"html", cat:"app",
+    desc:"단가를 바꿔가며 매총율 변화를 즉시 계산하는 협상용 도구.", meta:"2026-06" },
+  { title:"회사소개서 2026", file:"files/sample.html", kind:"file", cat:"doc",
+    desc:"My Job Do for You의 자문 영역과 사례를 정리한 소개 자료.", meta:"2026-06" },
+  { title:"샘플 자료", file:"files/sample.html", kind:"html",
+    desc:"이 줄을 지우고 실제 자료를 추가하세요. (작동 확인용 예시입니다.)", meta:"2026-06" },
+];
+
+const KIND_LABEL = { html:"HTML", file:"파일" };
+const CAT_LABEL  = { dash:"대시보드", app:"앱", doc:"문서" };
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* thumbnails (brass on navy) */
+const THUMB = {
+  dash:`<svg viewBox="0 0 300 132" preserveAspectRatio="none"><g fill="#C9A45C" opacity=".85">
+    <rect x="34" y="74" width="26" height="48" rx="2"/><rect x="78" y="52" width="26" height="70" rx="2"/>
+    <rect x="122" y="34" width="26" height="88" rx="2"/><rect x="166" y="60" width="26" height="62" rx="2"/>
+    <rect x="210" y="42" width="26" height="80" rx="2"/><rect x="254" y="66" width="14" height="56" rx="2"/></g>
+    <line x1="24" y1="122" x2="280" y2="122" stroke="rgba(201,164,92,.3)" stroke-width="1.5"/></svg>`,
+  app:`<svg viewBox="0 0 300 132"><g transform="translate(150,66)">
+    <rect x="-42" y="-28" width="36" height="36" rx="7" fill="#C9A45C"/><rect x="6" y="-28" width="36" height="36" rx="7" fill="#E2C586" opacity=".7"/>
+    <rect x="-42" y="16" width="36" height="36" rx="7" fill="#E2C586" opacity=".7"/><rect x="6" y="16" width="36" height="36" rx="7" fill="#C9A45C"/></g></svg>`,
+  doc:`<svg viewBox="0 0 300 132"><g transform="translate(150,66)">
+    <rect x="-32" y="-40" width="64" height="80" rx="6" fill="none" stroke="#ECE6D8" stroke-width="2" opacity=".55"/>
+    <line x1="-18" y1="-22" x2="18" y2="-22" stroke="#9BA6B6" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-18" y1="-6" x2="18" y2="-6" stroke="#9BA6B6" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-18" y1="10" x2="6" y2="10" stroke="#9BA6B6" stroke-width="3" stroke-linecap="round"/></g></svg>`,
+};
+function thumbFor(r){ return THUMB[r.cat] || (r.kind==='html' ? THUMB.dash : THUMB.doc); }
+
+function render(list){
+  const grid = document.getElementById('grid');
+  if(!list.length){ grid.innerHTML = '<div class="empty">등록된 자료가 없습니다.</div>'; return; }
+  grid.innerHTML = list.map(r=>{
+    const open = r.kind === 'html';
+    const act = open
+      ? `<a class="act" href="${esc(r.file)}" target="_blank" rel="noopener">열기</a>`
+      : `<a class="act" href="${esc(r.file)}" download>다운로드</a>`;
+    const label = CAT_LABEL[r.cat] || KIND_LABEL[r.kind] || '파일';
+    return `<div class="card">
+      <div class="thumb"><span class="kind">${label}</span>${thumbFor(r)}</div>
+      <div class="card-body">
+        <h3>${esc(r.title)}</h3>
+        <p class="desc">${esc(r.desc||'')}</p>
+        <div class="foot"><span class="meta">${esc(r.meta||'')}</span>${act}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let filter = 'all';
+function update(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const list = RESOURCES.filter(r =>
+    (filter==='all' || r.cat===filter) &&
+    (!q || (r.title+r.desc).toLowerCase().includes(q))
+  );
+  document.getElementById('count').textContent = `${list.length}건`;
+  render(list);
+}
+document.getElementById('search').addEventListener('input', update);
+document.getElementById('chips').addEventListener('click', e=>{
+  const c = e.target.closest('.chip'); if(!c) return;
+  filter = c.dataset.f;
+  document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', String(x===c)));
+  update();
+});
+update();
+</script>
+</body>
+</html>
